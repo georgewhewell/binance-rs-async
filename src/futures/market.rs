@@ -499,7 +499,7 @@ impl FuturesMarket {
 
     /// 24hr ticker price change statistics for all symbols
     pub async fn get_all_24h_price_stats(&self) -> Result<Vec<PriceStats>> {
-        self.client.get_p("/fapi/v1/ticker/24hr", "").await
+        self.client.get_p("/fapi/v1/ticker/24hr", None).await
     }
 
     /// Latest price for ONE symbol.
@@ -515,7 +515,7 @@ impl FuturesMarket {
     /// Symbols order book ticker
     /// -> Best price/qty on the order book for ALL symbols.
     pub async fn get_all_book_tickers(&self) -> Result<BookTickers> {
-        self.client.get_p("/fapi/v1/ticker/bookTicker", "").await
+        self.client.get_p("/fapi/v1/ticker/bookTicker", None).await
     }
 
     // -> Best price/qty on the order book for ONE symbol
@@ -528,11 +528,7 @@ impl FuturesMarket {
             .await
     }
 
-    pub async fn get_mark_prices(&self) -> Result<MarkPrices> { self.client.get_p("/fapi/v1/premiumIndex", "").await }
-
-    pub async fn get_all_liquidation_orders(&self) -> Result<LiquidationOrders> {
-        self.client.get_p("/fapi/v1/allForceOrders", "").await
-    }
+    pub async fn get_mark_prices(&self) -> Result<MarkPrices> { self.client.get_p("/fapi/v1/premiumIndex", None).await }
 
     pub async fn open_interest<S>(&self, symbol: S) -> Result<OpenInterest>
     where

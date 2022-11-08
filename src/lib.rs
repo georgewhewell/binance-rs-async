@@ -36,7 +36,7 @@
 //!         Err(err) => {
 //!             match err {
 //!                 BinanceLibError::BinanceError { response } => match response.code {
-//!                     -1000_i16 => println!("An unknown error occured while processing the request"),
+//!                     -1000_i32 => println!("An unknown error occured while processing the request"),
 //!                     _ => println!("Unknown code {}: {}", response.code, response.msg),
 //!                 },
 //!                 _ => println!("Other errors: {}.", err),
@@ -62,13 +62,14 @@
 
 #![deny(unstable_features, unused_must_use, unused_mut, unused_imports, unused_import_braces)]
 
-#[macro_use]
+// #[macro_use]
 extern crate lazy_static;
 #[macro_use]
 extern crate serde;
 extern crate serde_qs as qs;
 
-pub use util::{bool_to_string, bool_to_string_some};
+pub use util::bool_to_string;
+pub use util::bool_to_string_some;
 
 mod client;
 pub mod errors;
@@ -87,7 +88,7 @@ pub mod rest_model;
 #[cfg(feature = "savings_api")]
 pub mod savings;
 pub mod userstream;
-pub mod websockets;
-pub mod ws_model;
 #[cfg(feature = "wallet_api")]
 pub mod wallet;
+pub mod websockets;
+pub mod ws_model;

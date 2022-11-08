@@ -1,8 +1,8 @@
+use serde_json::Value;
+
 use crate::client::*;
 use crate::errors::*;
 use crate::rest_model::*;
-
-use serde_json::from_str;
 
 #[derive(Clone)]
 pub struct General {
@@ -19,10 +19,10 @@ impl General {
     /// assert!(pong.is_ok(), "{:?}", pong);
     /// assert_eq!(pong.unwrap(), "pong");
     /// ```
-    pub async fn ping(&self) -> Result<String> {
-        self.client.get("/api/v3/ping", "").await?;
+    pub async fn ping(&self) -> Result<&'static str> {
+        let _: Value = self.client.get("/api/v3/ping", None).await?;
 
-        Ok("pong".into())
+        Ok("pong")
     }
 
     /// Check server time
@@ -33,13 +33,7 @@ impl General {
     /// let server_time = tokio_test::block_on(general.get_server_time());
     /// assert!(server_time.is_ok(), "{:?}", server_time);
     /// ```
-    pub async fn get_server_time(&self) -> Result<ServerTime> {
-        let data: String = self.client.get("/api/v3/time", "").await?;
-
-        let server_time: ServerTime = from_str(data.as_str())?;
-
-        Ok(server_time)
-    }
+    pub async fn get_server_time(&self) -> Result<ServerTime> { self.client.get("/api/v3/time", None).await }
 
     /// Obtain exchange information (rate limits, symbol metadata etc)
     /// # Examples
@@ -50,10 +44,6 @@ impl General {
     /// assert!(excyahge_info.is_ok(), "{:?}", excyahge_info);
     /// ```
     pub async fn exchange_info(&self) -> Result<ExchangeInformation> {
-        let data: String = self.client.get("/api/v3/exchangeInfo", "").await?;
-
-        let info: ExchangeInformation = from_str(data.as_str())?;
-
-        Ok(info)
+        self.client.get("/api/v3/exchangeInfo", None).await
     }
 }
